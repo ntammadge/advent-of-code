@@ -14,7 +14,7 @@ func day2(inputData string, part int) {
 
 	lines := strings.Split(inputData, "\n")
 
-	gameIdSum := 0
+	gameSum := 0
 	redsPattern := regexp.MustCompile("(\\d+) red")
 	greensPattern := regexp.MustCompile("(\\d+) green")
 	bluesPattern := regexp.MustCompile("(\\d+) blue")
@@ -23,37 +23,54 @@ func day2(inputData string, part int) {
 		gameData := strings.Split(lines[i], ": ")[1]
 		subsets := strings.Split(gameData, "; ")
 		invalid := false
+		// Part 2 only
+		// Can I make this cleaner?
+		minRed := 0
+		minGreen := 0
+		minBlue := 0
 
 		for _, subset := range subsets {
-			colors := strings.Split(subset, ", ")
-			for _, color := range colors {
-				if redsMatch := redsPattern.FindStringSubmatch(color); redsMatch != nil {
-					if redCount, _ := strconv.Atoi(redsMatch[1]); redCount > maxReds {
-						invalid = true
-						break
-					}
-				} else if greensMatch := greensPattern.FindStringSubmatch(color); greensMatch != nil {
-					if greenCount, _ := strconv.Atoi(greensMatch[1]); greenCount > maxGreens {
-						invalid = true
-						break
-					}
-				} else if bluesMatch := bluesPattern.FindStringSubmatch(color); bluesMatch != nil {
-					if blueCount, _ := strconv.Atoi(bluesMatch[1]); blueCount > maxBlues {
-						invalid = true
-						break
-					}
-				}
+			redsMatch := redsPattern.FindStringSubmatch(subset)
+			greensMatch := greensPattern.FindStringSubmatch(subset)
+			bluesMatch := bluesPattern.FindStringSubmatch(subset)
+
+			redCount := 0
+			if redsMatch != nil {
+				redCount, _ = strconv.Atoi((redsMatch[1]))
+			}
+			blueCount := 0
+			if bluesMatch != nil {
+				blueCount, _ = strconv.Atoi((bluesMatch[1]))
+			}
+			greenCount := 0
+			if greensMatch != nil {
+				greenCount, _ = strconv.Atoi((greensMatch[1]))
 			}
 
-			if invalid {
-				break
+			if part == 1 {
+				if redCount > maxReds || blueCount > maxBlues || greenCount > maxGreens {
+					invalid = true
+					break
+				}
+			} else {
+				if redCount > minRed {
+					minRed = redCount
+				}
+				if greenCount > minGreen {
+					minGreen = greenCount
+				}
+				if blueCount > minBlue {
+					minBlue = blueCount
+				}
 			}
 		}
 
-		if !invalid {
-			gameIdSum += i + 1
+		if part == 2 {
+			gameSum += minRed * minGreen * minBlue
+		} else if !invalid {
+			gameSum += i + 1
 		}
 	}
 
-	fmt.Printf("Sum of invalid game ids: %v\n", gameIdSum)
+	fmt.Printf("Sum from games: %v\n", gameSum)
 }
