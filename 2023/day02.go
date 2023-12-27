@@ -8,69 +8,96 @@ import (
 )
 
 func day2(inputData string, part int) {
-	maxReds := 12
-	maxGreens := 13
-	maxBlues := 14
-
 	lines := strings.Split(inputData, "\n")
 
 	gameSum := 0
-	redsPattern := regexp.MustCompile("(\\d+) red")
-	greensPattern := regexp.MustCompile("(\\d+) green")
-	bluesPattern := regexp.MustCompile("(\\d+) blue")
 
 	for i := 0; i < len(lines); i++ {
-		gameData := strings.Split(lines[i], ": ")[1]
-		subsets := strings.Split(gameData, "; ")
-		invalid := false
-		// Part 2 only
-		// Can I make this cleaner?
-		minRed := 0
-		minGreen := 0
-		minBlue := 0
-
-		for _, subset := range subsets {
-			redsMatch := redsPattern.FindStringSubmatch(subset)
-			greensMatch := greensPattern.FindStringSubmatch(subset)
-			bluesMatch := bluesPattern.FindStringSubmatch(subset)
-
-			redCount := 0
-			if redsMatch != nil {
-				redCount, _ = strconv.Atoi((redsMatch[1]))
-			}
-			blueCount := 0
-			if bluesMatch != nil {
-				blueCount, _ = strconv.Atoi((bluesMatch[1]))
-			}
-			greenCount := 0
-			if greensMatch != nil {
-				greenCount, _ = strconv.Atoi((greensMatch[1]))
-			}
-
-			if part == 1 {
-				if redCount > maxReds || blueCount > maxBlues || greenCount > maxGreens {
-					invalid = true
-					break
-				}
-			} else {
-				if redCount > minRed {
-					minRed = redCount
-				}
-				if greenCount > minGreen {
-					minGreen = greenCount
-				}
-				if blueCount > minBlue {
-					minBlue = blueCount
-				}
-			}
-		}
-
 		if part == 2 {
-			gameSum += minRed * minGreen * minBlue
-		} else if !invalid {
+			gameSum += p2Eval(lines[i])
+		} else if p1Eval(lines[i]) {
 			gameSum += i + 1
 		}
 	}
 
 	fmt.Printf("Sum from games: %v\n", gameSum)
+}
+
+func p1Eval(line string) (isInvalid bool) {
+	maxAllowedReds := 12
+	maxAllowedGreens := 13
+	maxAllowedBlues := 14
+
+	gameData := strings.Split(line, ": ")[1]
+	subsets := strings.Split(gameData, "; ")
+
+	for _, subset := range subsets {
+		redCount := getRedCount(subset)
+		blueCount := getBlueCount(subset)
+		greenCount := getGreenCount(subset)
+
+		if redCount > maxAllowedReds || blueCount > maxAllowedBlues || greenCount > maxAllowedGreens {
+			return true
+		}
+	}
+	return false
+}
+
+func p2Eval(line string) (setPower int) {
+	maxReds := 0
+	maxBlues := 0
+	maxGreens := 0
+
+	gameData := strings.Split(line, ": ")[1]
+	subsets := strings.Split(gameData, "; ")
+
+	for _, subset := range subsets {
+		redCount := getRedCount(subset)
+		blueCount := getBlueCount(subset)
+		greenCount := getGreenCount(subset)
+
+		if redCount > maxReds {
+			maxReds = redCount
+		}
+		if blueCount > maxBlues {
+			maxBlues = blueCount
+		}
+		if greenCount > maxGreens {
+			maxGreens = greenCount
+		}
+	}
+	return maxReds * maxBlues * maxGreens
+}
+
+func getRedCount(subset string) (redCount int) {
+	redsPattern := regexp.MustCompile("(\\d+) red")
+	redsMatch := redsPattern.FindStringSubmatch(subset)
+
+	redCount = 0
+	if redsMatch != nil {
+		redCount, _ = strconv.Atoi(redsMatch[1])
+	}
+	return redCount
+}
+
+func getGreenCount(subset string) (greenCount int) {
+	greensPattern := regexp.MustCompile("(\\d+) green")
+	greensMatch := greensPattern.FindStringSubmatch(subset)
+
+	greenCount = 0
+	if greensMatch != nil {
+		greenCount, _ = strconv.Atoi(greensMatch[1])
+	}
+	return greenCount
+}
+
+func getBlueCount(subset string) (blueCount int) {
+	bluesPattern := regexp.MustCompile("(\\d+) blue")
+	bluesMatch := bluesPattern.FindStringSubmatch(subset)
+
+	blueCount = 0
+	if bluesMatch != nil {
+		blueCount, _ = strconv.Atoi(bluesMatch[1])
+	}
+	return blueCount
 }
