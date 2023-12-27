@@ -25,8 +25,8 @@ func day2(inputData string, part int) {
 		invalid := false
 
 		for _, subset := range subsets {
-			colorInfo := strings.Split(subset, ", ")
-			for _, color := range colorInfo {
+			colors := strings.Split(subset, ", ")
+			for _, color := range colors {
 				if redsMatch := redsPattern.FindStringSubmatch(color); redsMatch != nil {
 					if redCount, _ := strconv.Atoi(redsMatch[1]); redCount > maxReds {
 						invalid = true
