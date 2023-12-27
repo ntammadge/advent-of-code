@@ -1,9 +1,7 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -19,28 +17,12 @@ const seven string = "seven"
 const eight string = "eight"
 const nine string = "nine"
 
-func main() {
-	partPointer := flag.Int("part", 1, "which part of the day's puzzle is solved")
-	inputPointer := flag.String("input", "", "file to pull input data from")
-	flag.Parse()
-
-	if *inputPointer == "" {
-		panic("Input file required (/input=filePath)")
-	}
-	if *partPointer != 1 && *partPointer != 2 {
-		panic("Part must be 1 (default) or 2")
-	}
-
-	fileBytes, err := os.ReadFile(*inputPointer)
-	if err != nil {
-		panic("ah")
-	}
-
+func day1(fileBytes []byte, part int) {
 	fileContent := string(fileBytes)
 	lines := strings.Split(fileContent, "\n")
 
 	// Convert word-form numbers to number characters and preserve the beginning and final characters for part 2 only
-	if *partPointer == 2 {
+	if part == 2 {
 		numberWordMap := map[string]string{
 			one:   "o1e",
 			two:   "t2o",
