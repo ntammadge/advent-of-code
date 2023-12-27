@@ -7,43 +7,22 @@ import (
 	"strings"
 )
 
-const one string = "one"
-const two string = "two"
-const three string = "three"
-const four string = "four"
-const five string = "five"
-const six string = "six"
-const seven string = "seven"
-const eight string = "eight"
-const nine string = "nine"
-
 func day1(fileBytes []byte, part int) {
 	fileContent := string(fileBytes)
 	lines := strings.Split(fileContent, "\n")
 
 	// Convert word-form numbers to number characters and preserve the beginning and final characters for part 2 only
 	if part == 2 {
-		numberWordMap := map[string]string{
-			one:   "o1e",
-			two:   "t2o",
-			three: "t3e",
-			four:  "f4r",
-			five:  "f5e",
-			six:   "s6x",
-			seven: "s7n",
-			eight: "e8t",
-			nine:  "n9e"}
-
 		for i := 0; i < len(lines); i++ {
-			lines[i] = strings.ReplaceAll(lines[i], one, numberWordMap[one])
-			lines[i] = strings.ReplaceAll(lines[i], two, numberWordMap[two])
-			lines[i] = strings.ReplaceAll(lines[i], three, numberWordMap[three])
-			lines[i] = strings.ReplaceAll(lines[i], four, numberWordMap[four])
-			lines[i] = strings.ReplaceAll(lines[i], five, numberWordMap[five])
-			lines[i] = strings.ReplaceAll(lines[i], six, numberWordMap[six])
-			lines[i] = strings.ReplaceAll(lines[i], seven, numberWordMap[seven])
-			lines[i] = strings.ReplaceAll(lines[i], eight, numberWordMap[eight])
-			lines[i] = strings.ReplaceAll(lines[i], nine, numberWordMap[nine])
+			lines[i] = strings.ReplaceAll(lines[i], "one", "o1e")
+			lines[i] = strings.ReplaceAll(lines[i], "two", "t2o")
+			lines[i] = strings.ReplaceAll(lines[i], "three", "t3e")
+			lines[i] = strings.ReplaceAll(lines[i], "four", "f4r")
+			lines[i] = strings.ReplaceAll(lines[i], "five", "f5e")
+			lines[i] = strings.ReplaceAll(lines[i], "six", "s6x")
+			lines[i] = strings.ReplaceAll(lines[i], "seven", "s7n")
+			lines[i] = strings.ReplaceAll(lines[i], "eight", "e8t")
+			lines[i] = strings.ReplaceAll(lines[i], "nine", "n9e")
 		}
 	}
 
