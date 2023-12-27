@@ -34,10 +34,8 @@ func day1(inputData string, part int) {
 			panic("match error")
 		}
 
-		tens, _ := strconv.Atoi(matches[0])
-		ones, _ := strconv.Atoi(matches[len(matches)-1])
-
-		calibrationValue += tens*10 + ones
+		lineVal, _ := strconv.Atoi(matches[0] + matches[len(matches)-1])
+		calibrationValue += lineVal
 	}
 
 	fmt.Printf("Calibration total %v\n", calibrationValue)
