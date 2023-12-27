@@ -7,9 +7,8 @@ import (
 	"strings"
 )
 
-func day1(fileBytes []byte, part int) {
-	fileContent := string(fileBytes)
-	lines := strings.Split(fileContent, "\n")
+func day1(inputData string, part int) {
+	lines := strings.Split(inputData, "\n")
 
 	// Convert word-form numbers to number characters and preserve the beginning and final characters for part 2 only
 	if part == 2 {

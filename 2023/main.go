@@ -23,7 +23,7 @@ func main() {
 		panic("Input file required (/input=filePath)")
 	}
 
-	solutionFunctions := map[string]func(inputData []byte, part int){
+	solutionFunctions := map[string]func(inputData string, part int){
 		"day1": day1,
 		"day2": day2,
 	}
@@ -33,6 +33,8 @@ func main() {
 		panic("ah")
 	}
 
+	fileContent := string(fileBytes)
+
 	solver := solutionFunctions["day"+fmt.Sprint(*dayPointer)]
-	solver(fileBytes, *partPointer)
+	solver(fileContent, *partPointer)
 }
